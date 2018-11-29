@@ -1,7 +1,7 @@
 var http = require('http')
 var spawn = require('child_process').spawn
 var createHandler = require('github-webhook-handler')
-var handler = createHandler({ path: '/pushCode', secret: '' }) // 在代码仓库的 Webhooks 选项处配置
+var handler = createHandler({ path: '/', secret: 'migongorg' }) // 在代码仓库的 Webhooks 选项处配置
 http.createServer(function (req, res) {
   handler(req, res, function (err) {
     res.statusCode = 404;
