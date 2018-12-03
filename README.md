@@ -11,5 +11,3 @@ npm run start
 ```
 npm run prod
 ```
-
-### Test
