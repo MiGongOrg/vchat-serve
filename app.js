@@ -56,15 +56,31 @@ app.get('/login', function (req, res) {
 
 // Chatroom
 
-// 房间用户名单
+// 聊天房间用户名单
 var roomInfo = {};
 
 io.on('connection', (socket) => {
   var addedUser = false;
   // 获取 roomId 在请求 socket 连接的 url 中
   var query = qs.parse(url.parse(socket.request.url).query)
+  var type = query.type
   var roomId = query.roomId
   var userOpenid = ''
+
+  // when the client emits 'new shake', this listens and executes
+  socket.on('new shake', (data) => {
+    // we tell the client to execute 'new shake'
+    socket.broadcast.emit('new shake', {
+      user: socket.user,
+      message: data
+    });
+  })
+
+  socket.on('new countdown', (data) => {
+    console.log('触发了：new countdown=roomId:', roomId)
+    // 通知该房间内所有人，有新人加入
+    io.to(roomId).emit('start countdown', {});
+  })
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
